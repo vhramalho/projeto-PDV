@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Primos Barbearia</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <!-- Cabeçalho preto com título -->
+    <header>
+        <h1>Estoque</h1>
+    </header>
+
+    <!-- Botão voltar -->
+    <section class="voltar">
+        <a href="index.html" class="botao-voltar">← Voltar</a>
+    </section>
+
+
+    <!-- Lista de produtos -->
+    <section class="estoque">
+        <h3>Produtos</h3>
+
+        <!-- Produto 1 -->
+        <div class="produto" onclick="toggleOpcoes(this)">
+            <img src="img/produto1.png" alt="Produto 1">
+            <div class="info">
+                <strong>Pomada Black</strong>
+                <p>Qtd: 10<br>R$25,00</p>
+            </div>
+            <div class="opcoes">
+                <button class="editar">📝</button>
+                <button class="excluir">🗑️</button>
+            </div>
+        </div>
+
+        <!-- Produto 2 -->
+        <div class="produto" onclick="toggleOpcoes(this)">
+            <img src="img/produto2.png" alt="Produto 2">
+            <div class="info">
+                <strong>Shampoo</strong>
+                <p>Qtd: 5<br>R$18,00</p>
+            </div>
+            <div class="opcoes">
+                <button class="editar">📝</button>
+                <button class="excluir">🗑️</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="area-botao">
+        <a href="adicionar_produto.html" id="botao-adicionar">+ Adicionar Produto</a>
+    </section>
+
+
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

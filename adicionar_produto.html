@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar Produto</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <h1>PDV Primos Barbearia</h1>
+  </header>
+
+  <!-- Botão Voltar -->
+  <section class="voltar">
+    <a href="estoque.html" class="botao-voltar">← Voltar</a>
+  </section>
+
+  <!-- Título da página -->
+  <section class="titulo-formulario">
+    <h2>Adicionar Produto</h2>
+  </section>
+
+  <!-- Formulário -->
+  <section class="formulario">
+    <label for="foto">Foto do Produto</label>
+    <input type="file" id="foto" accept="image/*">
+
+    <label for="nome">Nome</label>
+    <input type="text" id="nome" placeholder="Ex: Pomada, Shampoo...">
+
+    <label for="valor">Valor (R$)</label>
+    <input type="number" id="valor" placeholder="Ex: 30.00">
+
+    <label for="quantidade">Quantidade</label>
+    <input type="number" id="quantidade" placeholder="Ex: 10">
+
+    <button id="confirmar">Confirmar</button>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Primos Barbearia</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <!-- Cabeçalho preto com título -->
+    <header>
+        <h1>PDV Primos Barbearia</h1>
+    </header>
+
+    <!-- Data -->
+    <section class="data">
+        <h2>10 julho</h2>
+    </section>
+
+    <!-- Caixa com valor e entradas/saídas -->
+    <section class="caixa">
+        <h3>Caixa</h3>
+        <p class="valor">
+            <strong id="valor-caixa">R$100,00</strong>
+            <button id="toggle-caixa" style="border: none; background: none; cursor: pointer;">👁️</button>
+        </p>
+
+        <div class="resumo">
+            <span class="resumo-entrada">+55,00</span>
+            <span class="resumo-saida">-10,00</span>
+        </div>
+    </section>
+
+    <!-- Lista de movimentações -->
+    <section class="movimentacoes">
+        <h3>Movimentações</h3>
+
+        <div class="movimento entrada" onclick="toggleOpcoes(this)">
+            <div class="barra cor-verde"></div>
+
+            <div class="info">
+                <strong>Victor</strong>
+                <p>3 batata<br>1 balm</p>
+            </div>
+
+            <span class="valor verde">R$45,00</span>
+
+            <div class="opcoes">
+                <button class="editar">📝</button>
+                <button class="excluir">🗑️</button>
+            </div>
+        </div>
+
+
+        <div class="movimento entrada" onclick="toggleOpcoes(this)">
+            <div class="barra cor-azul"></div>
+
+            <div class="info">
+                <strong>Entrada</strong>
+                <p>Venda extra</p>
+            </div>
+
+            <span class="valor verde">R$10,00</span>
+
+            <div class="opcoes">
+                <button class="editar">📝</button>
+                <button class="excluir">🗑️</button>
+            </div>
+        </div>
+
+        <div class="movimento saida" onclick="toggleOpcoes(this)">
+            <div class="barra cor-vermelha"></div>
+
+            <div class="info">
+                <strong>Saída</strong>
+                <p>Produto limpeza</p>
+            </div>
+
+            <span class="valor vermelho">R$10,00</span>
+
+            <div class="opcoes">
+                <button class="editar">📝</button>
+                <button class="excluir">🗑️</button>
+            </div>
+        </div>
+
+
+
+
+    </section>
+    <button id="botao-cadeado">🔒</button>
+    <!-- Menu inferior com ícones (placeholders) -->
+    <footer>
+        <nav>
+            <a href="estoque.html">📦</a>
+            <button id="toggle-botoes">➕</button>
+            <a href="relatorio.html">📊</a>
+        </nav>
+    </footer>
+    <div id="botoes-flutuantes"
+        style="display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); text-align: center;">
+        <a href="entrada.html">Entrada</a>
+        <a href="venda.html">Venda</a>
+        <a href="saida.html">Saída</a>
+    </div>
+    <!-- Modal 1 – Confirmação inicial -->
+    <div class="modal" id="modal1">
+        <div class="modal-box">
+            <p>Deseja iniciar o fechamento de caixa?</p>
+            <div class="modal-botoes">
+                <button onclick="fecharModal(1)">Cancelar</button>
+                <button onclick="proximoModal(2)">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 – Conferência de estoque -->
+    <div class="modal" id="modal2">
+        <div class="modal-box">
+            <p>Seu estoque está correto?</p>
+            <div class="estoque-simulacao">
+                <p>Pomada: 10 un</p>
+                <p>Shampoo: 5 un</p>
+                <p>Balm: 2 un</p>
+            </div>
+            <div class="modal-botoes">
+                <button onclick="fecharModal(2)">Cancelar</button>
+                <button onclick="proximoModal(3)">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3 – Conferência de caixa -->
+    <div class="modal" id="modal3">
+        <div class="modal-box">
+            <p>O seu caixa está correto?</p>
+            <p><strong>R$ 250,00</strong></p>
+            <div class="modal-botoes">
+                <button onclick="fecharModal(3)">Cancelar</button>
+                <button onclick="proximoModal(4)">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4 – Confirmação final -->
+    <div class="modal" id="modal4">
+        <div class="modal-box">
+            <p>Deseja finalizar o fechamento de caixa?</p>
+            <div class="modal-botoes">
+                <button onclick="fecharModal(4)">Cancelar</button>
+                <button onclick="finalizarFechamento()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

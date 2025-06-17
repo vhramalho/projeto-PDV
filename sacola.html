@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sacola</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+        <h1>PDV Primos Barbearia</h1>
+    </header>
+
+    <!-- Botão Voltar -->
+    <section class="voltar">
+        <a href="venda.html" class="botao-voltar">← Voltar</a>
+    </section>
+
+    <!-- Título da página -->
+    <section class="titulo-formulario">
+        <h2>Sacola</h2>
+    </section>
+
+    <!-- Lista de produtos na sacola -->
+    <section class="sacola-lista">
+
+        <div class="item-sacola">
+            <img src="img/produto1.png" alt="Produto 1">
+            <div class="info">
+                <strong>Pomada Black</strong>
+                <p>R$25,00</p>
+            </div>
+            <div class="controle">
+                <button class="menos">−</button>
+                <span class="quantidade">1</span>
+                <button class="mais">+</button>
+                <button class="excluir">🗑️</button>
+            </div>
+        </div>
+
+        <div class="item-sacola">
+            <img src="img/produto2.png" alt="Produto 2">
+            <div class="info">
+                <strong>Shampoo</strong>
+                <p>R$18,00</p>
+            </div>
+            <div class="controle">
+                <button class="menos">−</button>
+                <span class="quantidade">2</span>
+                <button class="mais">+</button>
+                <button class="excluir">🗑️</button>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Campo nome do cliente -->
+    <section class="cliente">
+        <label for="cliente">Nome do Cliente</label>
+        <input type="text" id="cliente" placeholder="Digite o nome">
+    </section>
+
+    <!-- Rodapé com total -->
+    <section class="sessao-venda">
+        <div class="resumo-venda">
+            <span><strong>Itens:</strong> 3</span>
+            <span><strong>Total:</strong> R$68,00</span>
+        </div>
+        <a href="#" class="botao-ver-sacola">Finalizar Venda</a>
+    </section>
+
+</body>
+
+</html>
