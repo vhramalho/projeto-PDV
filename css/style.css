@@ -493,7 +493,7 @@ hr {
 }
 
 .cliente label {
-    
+
     margin-bottom: 4px;
     font-weight: bold;
 }
@@ -506,100 +506,113 @@ hr {
 }
 
 .titulo-relatorio {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    margin-top: 16px;
 }
 
 .titulo-relatorio h2 {
-  font-size: 24px;
-  margin: 0;
+    font-size: 24px;
+    margin: 0;
 }
 
 .icone-filtro {
-  font-size: 24px;
-  cursor: pointer;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 .resumo-box {
-  background-color: #e0ecf8;
-  width: 90%;
-  margin: 16px auto;
-  border-radius: 10px;
-  padding: 12px 16px;
-  box-shadow: 0 0 5px #ccc;
+    background-color: #e0ecf8;
+    width: 90%;
+    margin: 16px auto;
+    border-radius: 10px;
+    padding: 12px 16px;
+    box-shadow: 0 0 5px #ccc;
 }
 
 .resumo-box h4 {
-  margin-top: 0;
-  margin-bottom: 8px;
+    margin-top: 0;
+    margin-bottom: 8px;
 }
 
 .relatorio-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  width: 90%;
-  margin: 0 auto 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 90%;
+    margin: 0 auto 40px;
 }
 
 .bloco-relatorio-grid {
-  background-color: #e0ecf8;
-  border-radius: 10px;
-  padding: 12px;
-  box-shadow: 0 0 5px #ccc;
-  font-size: 12px;
+    background-color: #e0ecf8;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 0 5px #ccc;
+    font-size: 12px;
 }
 
 .bloco-relatorio-grid h4 {
-  margin-top: 0;
-  margin-bottom: 8px;
+    margin-top: 0;
+    margin-bottom: 8px;
 }
 
 .bloco-relatorio-grid p {
-  margin: 4px 0;
+    margin: 4px 0;
 }
+
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
 .modal-box {
-  background-color: white;
-  padding: 24px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 320px;
-  text-align: center;
+    background-color: white;
+    padding: 24px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
 }
 
 .modal-botoes {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
 .modal-botoes button {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  background-color: #FFD700;
-  font-weight: bold;
-  cursor: pointer;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #FFD700;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .estoque-simulacao {
-  text-align: left;
-  margin: 10px 0;
+    text-align: left;
+    margin: 10px 0;
 }
 
+.botao-confirmar,
+.botao-cancelar {
+    
+    justify-content: space-around;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #FFD700;
+    font-weight: bold;
+    cursor: pointer;
+
+}

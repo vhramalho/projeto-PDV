@@ -17,8 +17,8 @@
     </header>
 
     <!-- Data -->
-    <section class="data">
-        <h2>10 julho</h2>
+    <section id="data-caixa" class="data">
+        <h2>10 de julho</h2>
     </section>
 
     <!-- Caixa com valor e entradas/saídas -->
@@ -156,8 +156,15 @@
             </div>
         </div>
     </div>
-
-
+    <!-- Modal de exclução de movimentação -->
+    <div id="modal-excluir" class="modal" style="display: none;">
+        <div class="modal-box">
+            <p>Deseja excluir esta movimentação?</p>
+            <button id="cancelar-exclusao" class="botao-cancelar">Cancelar</button>
+            <button id="confirmar-exclusao" class="botao-confirmar">Confirmar</button>
+            
+        </div>
+    </div>
 
     <script src="js/script.js"></script>
 </body>

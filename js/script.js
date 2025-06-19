@@ -71,4 +71,35 @@ function finalizarFechamento() {
   // Se quiser apagar as movimentações da lista, pode usar:
   const container = document.querySelector(".movimentacoes");
   if (container) container.innerHTML = "<h3>Movimentações</h3>";
+
+  //Atualiza a data após fechar o caixa
+  document.getElementById("data-caixa").innerHTML = '<h2>11 de julho</h2>';
 }
+let movimentoParaExcluir = null;
+
+// Detecta clique em qualquer botão .excluir dentro de .movimento
+document.querySelectorAll('.movimento').forEach(mov => {
+  mov.addEventListener('click', (e) => {
+    const botao = e.target;
+    if (botao.classList.contains('excluir')) {
+      e.stopPropagation(); // impede de abrir ou fechar outras divs
+      movimentoParaExcluir = botao.closest('.movimento');
+      document.getElementById('modal-excluir').style.display = 'flex';
+    }
+  });
+});
+
+// Quando clicar em "Sim"
+document.getElementById("confirmar-exclusao").addEventListener("click", () => {
+  if (movimentoParaExcluir) {
+    movimentoParaExcluir.remove();
+    movimentoParaExcluir = null;
+  }
+  document.getElementById("modal-excluir").style.display = "none";
+});
+
+// Quando clicar em "Não"
+document.getElementById("cancelar-exclusao").addEventListener("click", () => {
+  movimentoParaExcluir = null;
+  document.getElementById("modal-excluir").style.display = "none";
+});
