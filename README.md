@@ -7,11 +7,10 @@ Este é um sistema de ponto de venda (PDV) simples, feito com HTML, CSS e JavaSc
 - Visualização de caixa do dia (com opção de ocultar saldo)
 - Registro de movimentações: entrada, saída e vendas
 - Fechamento de caixa com conferência de estoque e caixa
-- Exclusão de movimentações individuais
+- Exclusão/Edição de movimentações individuais
 - Páginas de:
-  - Estoque
-  - Relatório (dia, semana, mês, ano)
-  - Entrada, Saída, Venda e Sacola
+  - Estoque (cadastro de produto com nome e imagem, edição de quantidade e valor de venda) 
+  - Relatório simples e detalhado (dia, semana, mês, ano)
 - Layout responsivo e otimizado para toque
 
 ## ⚙️ Tecnologias utilizadas
