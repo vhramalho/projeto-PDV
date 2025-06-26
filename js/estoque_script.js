@@ -28,6 +28,12 @@ document.addEventListener('DOMContentLoaded', function () {
         btnEditar.classList.add('editar');
         btnEditar.textContent = '📝';
 
+        btnEditar.addEventListener('click', (event) => {
+event.stopPropagation();
+const id = produto.id;
+window.location.href = `adicionar_produto.html?id=${id}`;
+});
+
         const btnExcluir = document.createElement('button');
         btnExcluir.classList.add('excluir');
         btnExcluir.textContent = '🗑️';

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adicionar Produto</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-  
+
   <!-- Cabeçalho -->
   <header>
     <h1>PDV Primos Barbearia</h1>
@@ -40,8 +42,19 @@
 
     <button id="confirmar">Confirmar</button>
   </section>
-  
+
+  <!-- Modal de Sucesso -->
+  <div class="modal" id="modal-sucesso" style="display: none;">
+    <div class="modal-box">
+      <p>Salvo com sucesso ✅</p>
+      <div class="modal-botoes">
+        <button class="botao-confirmar" onclick="fecharModal()">OK</button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/adicionar_produto.js"> </script>
 
 </body>
+
 </html>
