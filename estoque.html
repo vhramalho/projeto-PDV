@@ -25,14 +25,24 @@
     <!-- Lista de produtos -->
     <section class="estoque">
         <h3>Produtos</h3>
-    <!--Produtos Reais virão aqui via JavaScript-->
+        <!--Produtos Reais virão aqui via JavaScript-->
     </section>
 
     <section class="area-botao">
         <a href="adicionar_produto.html" id="botao-adicionar">+ Adicionar Produto</a>
     </section>
+    <!--Modal de confirmação de exclusão-->
+    <div id="modal-confirmacao" class="modal">
+        <div class="modal-box">
+            <p>Tem certeza que deseja excluir o produto?</p>
+            <div class="modal-botoes">
+                <button id="cancelar-exclusao" class="botao-cancelar">Cancelar</button>
+                <button id="confirmar-exclusao" class="botao-confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
 
-    <script src="js/estoque_script.js" ></script>
+    <script src="js/estoque_script.js"></script>
 </body>
 
 </html>
