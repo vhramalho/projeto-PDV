@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const produtoDiv = document.createElement('div');
         produtoDiv.classList.add('produto');
 
+        // 🔥 Aqui adiciona o comportamento de clique
+        produtoDiv.addEventListener('click', function () {
+            const opcoes = this.querySelector('.opcoes');
+            opcoes.style.display = opcoes.style.display === 'flex' ? 'none' : 'flex';
+        });
+
         const img = document.createElement('img');
         img.src = produto.imagem || 'img/placeholder.png';
         img.alt = produto.nome;
@@ -17,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const opcoesDiv = document.createElement('div');
         opcoesDiv.classList.add('opcoes');
+        opcoesDiv.style.display = 'none'; // 🔒 começa escondido
 
         const btnEditar = document.createElement('button');
         btnEditar.classList.add('editar');
@@ -25,6 +32,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const btnExcluir = document.createElement('button');
         btnExcluir.classList.add('excluir');
         btnExcluir.textContent = '🗑️';
+
+        btnExcluir.setAttribute('data-id', produto.id);
+
+        btnExcluir.addEventListener('click', (event) => {
+            event.stopPropagation(); // impede o clique de abrir o menu de opções
+            const id = event.target.getAttribute('data-id');
+            excluirProduto(id);
+        });
 
         opcoesDiv.appendChild(btnEditar);
         opcoesDiv.appendChild(btnExcluir);
@@ -36,3 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
         container.appendChild(produtoDiv);
     });
 });
+
+function excluirProduto(id) {
+    const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+    const novosProdutos = produtos.filter(produto => produto.id !== Number(id));
+    localStorage.setItem('produtos', JSON.stringify(novosProdutos));
+    location.reload(); // recarrega a página para atualizar a lista
+}
