@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const resumoTotal = document.querySelector('.resumo-venda span:nth-child(2)');
 
     let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
-    let sacola = [];
+    let sacola = JSON.parse(localStorage.getItem('sacola')) || [];
 
     // Cria os cards dos produtos com base no estoque
     produtos.forEach(produto => {
@@ -13,12 +13,16 @@ document.addEventListener('DOMContentLoaded', function () {
         card.setAttribute('data-id', produto.id);
         card.setAttribute('data-estoque', produto.quantidade);
 
+        // Verifica se esse produto já estava na sacola
+        const produtoNaSacola = sacola.find(item => item.id === produto.id);
+        const quantidadeAtual = produtoNaSacola ? produtoNaSacola.quantidade : 0;
+
         card.innerHTML = `
 <img src="${produto.imagem || 'img/placeholder.png'}" alt="${produto.nome}">
 <p>R$${parseFloat(produto.valor).toFixed(2)}</p>
 <div class="controle-quantidade">
 <button class="menos">−</button>
-<span class="quantidade">0</span>
+<span class="quantidade">${quantidadeAtual}</span>
 <button class="mais">+</button>
 </div>
 `;
@@ -39,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const img = produtos.find(p => p.id === id).imagem;
         const quantidadeSpan = card.querySelector('.quantidade');
         let atual = Number(quantidadeSpan.textContent);
-        
+
 
         if (botao.classList.contains('mais') && atual < estoque) {
             atual++;
@@ -71,5 +75,13 @@ document.addEventListener('DOMContentLoaded', function () {
         resumoTotal.innerHTML = `<strong>Total:</strong> R$${totalValor.toFixed(2)}`;
 
         localStorage.setItem('sacola', JSON.stringify(sacola));
+
     }
+    atualizarResumo();
+    // Ao clicar no botão de voltar para a tela inicial, zera a sacola
+    document.getElementById('voltar-para-inicio').addEventListener('click', function (e) {
+        e.preventDefault(); // Impede a navegação imediata
+        localStorage.removeItem('sacola'); // Limpa a sacola
+        window.location.href = 'index.html'; // Agora sim, vai para a página inicial
+    });
 });
