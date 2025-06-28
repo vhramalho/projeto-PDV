@@ -1,105 +1,138 @@
-// Alternar visibilidade do valor do caixa
-const botaoCaixa = document.getElementById('toggle-caixa');
-const valorCaixa = document.getElementById('valor-caixa');
+document.addEventListener("DOMContentLoaded", () => {
+const valorCaixa = document.getElementById("valor-caixa");
+const botaoCaixa = document.getElementById("toggle-caixa");
+const botaoToggle = document.getElementById("toggle-botoes");
+const botoesFlutuantes = document.getElementById("botoes-flutuantes");
+const movimentacoesContainer = document.querySelector(".movimentacoes");
+const resumoEntrada = document.querySelector(".resumo-entrada");
+const resumoSaida = document.querySelector(".resumo-saida");
+
 let caixaVisivel = true;
-
-botaoCaixa.addEventListener('click', () => {
-  caixaVisivel = !caixaVisivel;
-  valorCaixa.textContent = caixaVisivel ? 'R$100,00' : '••••••';
-});
-
-// Alternar botões flutuantes
-const botaoToggle = document.getElementById('toggle-botoes');
-const botoesFlutuantes = document.getElementById('botoes-flutuantes');
 let botoesVisiveis = false;
-
-botaoToggle.addEventListener('click', () => {
-  botoesVisiveis = !botoesVisiveis;
-  botoesFlutuantes.style.display = botoesVisiveis ? 'block' : 'none';
-});
-function toggleOpcoes(elemento) {
-  elemento.classList.toggle('ativo');
-}
-// Abrir o primeiro modal ao clicar no botão de cadeado
-document.getElementById("botao-cadeado").addEventListener("click", () => {
-  abrirModal(1);
-});
-
-// Abre o modal com ID correspondente
-function abrirModal(numero) {
-  document.getElementById(`modal${numero}`).style.display = "flex";
-}
-
-// Fecha o modal atual
-function fecharModal(numero) {
-  document.getElementById(`modal${numero}`).style.display = "none";
-}
-
-// Fecha o modal atual e abre o próximo
-function proximoModal(numero) {
-  fecharModal(numero - 1);
-  abrirModal(numero);
-}
-
-// Finaliza o fechamento do caixa (reseta tela visualmente)
-function finalizarFechamento() {
-  fecharModal(4);
-
-  // Aqui é só visual por enquanto:
-  // Zera os valores exibidos (exemplo)
-  function finalizarFechamento() {
-    fecharModal(4);
-
-    // ❌ NÃO zera o valor do caixa — ele deve manter o saldo final
-
-    // ✅ Zera os valores de entrada e saída
-    const resumoEntrada = document.querySelector(".resumo-entrada");
-    const resumoSaida = document.querySelector(".resumo-saida");
-    if (resumoEntrada) resumoEntrada.textContent = "+0,00";
-    if (resumoSaida) resumoSaida.textContent = "-0,00";
-
-    // ✅ Remove as movimentações da tela
-    const container = document.querySelector(".movimentacoes");
-    if (container) container.innerHTML = "<h3>Movimentações</h3>";
-  }
-
-  const resumoEntrada = document.querySelector(".resumo-entrada");
-  const resumoSaida = document.querySelector(".resumo-saida");
-  if (resumoEntrada) resumoEntrada.textContent = "+0,00";
-  if (resumoSaida) resumoSaida.textContent = "-0,00";
-
-  // Se quiser apagar as movimentações da lista, pode usar:
-  const container = document.querySelector(".movimentacoes");
-  if (container) container.innerHTML = "<h3>Movimentações</h3>";
-
-  //Atualiza a data após fechar o caixa
-  document.getElementById("data-caixa").innerHTML = '<h2>11 de julho</h2>';
-}
 let movimentoParaExcluir = null;
 
-// Detecta clique em qualquer botão .excluir dentro de .movimento
-document.querySelectorAll('.movimento').forEach(mov => {
-  mov.addEventListener('click', (e) => {
-    const botao = e.target;
-    if (botao.classList.contains('excluir')) {
-      e.stopPropagation(); // impede de abrir ou fechar outras divs
-      movimentoParaExcluir = botao.closest('.movimento');
-      document.getElementById('modal-excluir').style.display = 'flex';
-    }
-  });
+// Exibe o saldo e movimentações reais
+function atualizarTelaInicial() {
+const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
+
+// Reset visual
+movimentacoesContainer.innerHTML = "<h3>Movimentações</h3>";
+let saldo = 0;
+let totalEntrada = 0;
+let totalSaida = 0;
+
+movimentacoes.forEach((mov, index) => {
+const div = document.createElement("div");
+div.classList.add("movimento", mov.tipo);
+div.setAttribute("data-index", index);
+div.setAttribute("onclick", "toggleOpcoes(this)");
+
+const cor = mov.tipo === "entrada" ? "cor-azul" : mov.tipo === "saida" ? "cor-vermelha" : "cor-verde";
+const corValor = mov.tipo === "saida" ? "vermelho" : "verde";
+const sinal = mov.tipo === "saida" ? "-" : "+";
+
+div.innerHTML = `
+<div class="barra ${cor}"></div>
+<div class="info">
+<strong>${mov.nome}</strong>
+<p>${mov.descricao || ""}</p>
+</div>
+<span class="valor ${corValor}">R$${parseFloat(mov.valor).toFixed(2)}</span>
+<div class="opcoes">
+<button class="editar">📝</button>
+<button class="excluir">🗑️</button>
+</div>
+`;
+movimentacoesContainer.appendChild(div);
+
+if (mov.tipo === "entrada") {
+saldo += mov.valor;
+totalEntrada += mov.valor;
+} else if (mov.tipo === "saida") {
+saldo -= mov.valor;
+totalSaida += mov.valor;
+} else if (mov.tipo === "venda") {
+saldo += mov.valor;
+totalEntrada += mov.valor;
+}
 });
 
-// Quando clicar em "Sim"
+valorCaixa.textContent = caixaVisivel ? "R$" + saldo.toFixed(2) : "••••••";
+resumoEntrada.textContent = "+" + totalEntrada.toFixed(2);
+resumoSaida.textContent = "-" + totalSaida.toFixed(2);
+}
+
+// Alternar visibilidade do saldo
+botaoCaixa.addEventListener("click", () => {
+caixaVisivel = !caixaVisivel;
+atualizarTelaInicial();
+});
+
+// Mostrar/ocultar botões flutuantes
+botaoToggle.addEventListener("click", () => {
+botoesVisiveis = !botoesVisiveis;
+botoesFlutuantes.style.display = botoesVisiveis ? "block" : "none";
+});
+
+// Ativar/desativar opções da movimentação
+window.toggleOpcoes = function (elemento) {
+elemento.classList.toggle("ativo");
+};
+
+// Botão de cadeado abre o modal de fechamento
+document.getElementById("botao-cadeado").addEventListener("click", () => {
+abrirModal(1);
+});
+
+function abrirModal(numero) {
+document.getElementById("modal" + numero).style.display = "flex";
+}
+
+function fecharModal(numero) {
+document.getElementById("modal" + numero).style.display = "none";
+}
+
+function proximoModal(numero) {
+fecharModal(numero - 1);
+abrirModal(numero);
+}
+
+window.fecharModal = fecharModal;
+window.proximoModal = proximoModal;
+
+// Botão confirmar fechamento do caixa
+window.finalizarFechamento = () => {
+fecharModal(4);
+localStorage.removeItem("movimentacoes");
+atualizarTelaInicial();
+document.getElementById("data-caixa").innerHTML = `<h2>${new Date().toLocaleDateString("pt-BR")}</h2>`;
+};
+
+// Exclusão de movimentação
+document.addEventListener("click", (e) => {
+if (e.target.classList.contains("excluir")) {
+e.stopPropagation();
+movimentoParaExcluir = e.target.closest(".movimento");
+document.getElementById("modal-excluir").style.display = "flex";
+}
+});
+
 document.getElementById("confirmar-exclusao").addEventListener("click", () => {
-  if (movimentoParaExcluir) {
-    movimentoParaExcluir.remove();
-    movimentoParaExcluir = null;
-  }
-  document.getElementById("modal-excluir").style.display = "none";
+const index = movimentoParaExcluir?.getAttribute("data-index");
+if (index !== null) {
+const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
+movimentacoes.splice(index, 1);
+localStorage.setItem("movimentacoes", JSON.stringify(movimentacoes));
+atualizarTelaInicial();
+}
+document.getElementById("modal-excluir").style.display = "none";
+movimentoParaExcluir = null;
 });
 
-// Quando clicar em "Não"
 document.getElementById("cancelar-exclusao").addEventListener("click", () => {
-  movimentoParaExcluir = null;
-  document.getElementById("modal-excluir").style.display = "none";
+document.getElementById("modal-excluir").style.display = "none";
+movimentoParaExcluir = null;
+});
+
+atualizarTelaInicial();
 });
