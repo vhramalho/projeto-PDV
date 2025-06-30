@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Relatório</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <!-- Cabeçalho -->
@@ -20,81 +22,82 @@
 
   <!-- Seção Relatório -->
   <section class="relatorio">
-  <h3>Relatórios</h3>
+    <h3>Relatórios</h3>
 
-  <!-- Dia -->
-  <a href="relatorio-dia.html" class="bloco-relatorio">
-    <h4>Dia</h4>
-    <div class="linha">
-      <span>↑ Entrada</span>
-      <span>R$50,00</span>
-    </div>
-    <div class="linha">
-      <span>↓ Saída</span>
-      <span>R$20,00</span>
-    </div>
-    <hr>
-    <div class="linha">
-      <strong>Saldo</strong>
-      <strong>R$30,00</strong>
-    </div>
-  </a>
+    <!-- Dia -->
+    <a id="bloco-dia" href="relatorio-dia.html" class="bloco-relatorio">
+      <h4>Dia</h4>
+      <div class="linha">
+        <span>↑ Entrada</span>
+        <span class="entrada">R$0,00</span>
+      </div>
+      <div class="linha">
+        <span>↓ Saída</span>
+        <span class="saida">R$0,00</span>
+      </div>
+      <hr>
+      <div class="linha">
+        <strong>Saldo</strong>
+        <strong class="saldo">R$0,00</strong>
+      </div>
+    </a>
 
-  <!-- Semana -->
-  <a href="relatorio-semana.html" class="bloco-relatorio">
-    <h4>Semana</h4>
-    <div class="linha">
-      <span>↑ Entrada</span>
-      <span>R$200,00</span>
-    </div>
-    <div class="linha">
-      <span>↓ Saída</span>
-      <span>R$50,00</span>
-    </div>
-    <hr>
-    <div class="linha">
-      <strong>Saldo</strong>
-      <strong>R$150,00</strong>
-    </div>
-  </a>
+    <!-- Semana -->
+    <a id="bloco-semana" href="relatorio-semana.html" class="bloco-relatorio">
+      <h4>Semana</h4>
+      <div class="linha">
+        <span>↑ Entrada</span>
+        <span class="entrada">R$0,00</span>
+      </div>
+      <div class="linha">
+        <span>↓ Saída</span>
+        <span class="saida">R$0,00</span>
+      </div>
+      <hr>
+      <div class="linha">
+        <strong>Saldo</strong>
+        <strong class="saldo">R$0,00</strong>
+      </div>
+    </a>
 
-  <!-- Mês -->
-  <a href="relatorio-mes.html" class="bloco-relatorio">
-    <h4>Mês</h4>
-    <div class="linha">
-      <span>↑ Entrada</span>
-      <span>R$10,00</span>
-    </div>
-    <div class="linha">
-      <span>↓ Saída</span>
-      <span>R$10,00</span>
-    </div>
-    <hr>
-    <div class="linha">
-      <strong>Saldo</strong>
-      <strong>R$10,00</strong>
-    </div>
-  </a>
+    <!-- Mês -->
+    <a id="bloco-mes" href="relatorio-mes.html" class="bloco-relatorio">
+      <h4>Mês</h4>
+      <div class="linha">
+        <span>↑ Entrada</span>
+        <span class="entrada">R$0,00</span>
+      </div>
+      <div class="linha">
+        <span>↓ Saída</span>
+        <span class="saida">R$0,00</span>
+      </div>
+      <hr>
+      <div class="linha">
+        <strong>Saldo</strong>
+        <strong class="saldo">R$0,00</strong>
+      </div>
+    </a>
 
-  <!-- Ano -->
-  <a href="relatorio-ano.html" class="bloco-relatorio">
-    <h4>Ano</h4>
-    <div class="linha">
-      <span>↑ Entrada</span>
-      <span>R$1000,00</span>
-    </div>
-    <div class="linha">
-      <span>↓ Saída</span>
-      <span>R$500,00</span>
-    </div>
-    <hr>
-    <div class="linha">
-      <strong>Saldo</strong>
-      <strong>R$500,00</strong>
-    </div>
-  </a>
-</section>
+    <!-- Ano -->
+    <a id="bloco-ano" href="relatorio-ano.html" class="bloco-relatorio">
+      <h4>Ano</h4>
+      <div class="linha">
+        <span>↑ Entrada</span>
+        <span class="entrada">R$0,00</span>
+      </div>
+      <div class="linha">
+        <span>↓ Saída</span>
+        <span class="saida">R$0,00</span>
+      </div>
+      <hr>
+      <div class="linha">
+        <strong>Saldo</strong>
+        <strong class="saldo">R$0,00</strong>
+      </div>
+    </a>
+  </section>
 
-
+  <script src="js/relatorio_script.js"></script>
 </body>
+
 </html>

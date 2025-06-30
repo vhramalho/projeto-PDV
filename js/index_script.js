@@ -6,13 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
         let dataAtual = localStorage.getItem("dataAtual");
 
         if (!dataAtual) {
-            // Se for a primeira vez, pega a data de hoje
+            // Se for a primeira vez, pega a data local do Brasil
             const hoje = new Date();
-            dataAtual = hoje.toISOString().split("T")[0]; // formato YYYY-MM-DD
+            const [dia, mes, ano] = hoje.toLocaleDateString("pt-BR").split("/");
+            dataAtual = `${ano}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`; // formato YYYY-MM-DD
             localStorage.setItem("dataAtual", dataAtual);
         }
 
-        const dataFormatada = new Date(dataAtual).toLocaleDateString("pt-BR", {
+        const [ano, mes, dia] = dataAtual.split("-");
+        const dataFormatada = new Date(ano, mes - 1, dia).toLocaleDateString("pt-BR", {
             day: "2-digit",
             month: "long"
         });
@@ -145,15 +147,33 @@ document.addEventListener("DOMContentLoaded", () => {
     // Botão confirmar fechamento do caixa
     window.finalizarFechamento = () => {
         fecharModal(4);
+
+        const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
+        const historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+        const dataAtual = localStorage.getItem("dataAtual");
+        const [ano, mes, dia] = dataAtual.split("-");
+        const dataFormatada = `${dia}/${mes}/${ano}` ;
+
+        // Adiciona data a cada movimentação antes de enviar ao histórico
+        const movsComData = movimentacoes.map(mov => ({
+            ...mov,
+            data: dataFormatada
+        }));
+
+        // Adiciona ao histórico
+        const historicoAtualizado = [...historico, ...movsComData];
+        localStorage.setItem("historico", JSON.stringify(historicoAtualizado));
+
+        // Limpa movimentações do dia
         localStorage.removeItem("movimentacoes");
-        // Avança a data +1 dia
-        let dataAtual = localStorage.getItem("dataAtual");
-        if (dataAtual) {
-            const novaData = new Date(dataAtual);
-            novaData.setDate(novaData.getDate() + 1);
-            const novaDataFormatada = novaData.toISOString().split("T")[0];
-            localStorage.setItem("dataAtual", novaDataFormatada);
-        }
+
+        // Avança o dia +1
+        const novaData = new Date(dataAtual);
+        novaData.setDate(novaData.getDate() + 1);
+        const novaDataFormatada = novaData.toISOString().split("T")[0];
+        localStorage.setItem("dataAtual", novaDataFormatada);
+
         exibirDataAtual();
         atualizarTelaInicial();
     };

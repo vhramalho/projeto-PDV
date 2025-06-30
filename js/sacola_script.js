@@ -80,39 +80,44 @@ document.addEventListener('DOMContentLoaded', function () {
     atualizarResumo();
 
     // Botão "Finalizar Venda"
-document.querySelector('.botao-ver-sacola').addEventListener('click', () => {
-    const nomeCliente = document.getElementById('cliente').value.trim();
-    if (sacola.length === 0) return alert("Sacola vazia.");
+    document.querySelector('.botao-ver-sacola').addEventListener('click', () => {
+        const nomeCliente = document.getElementById('cliente').value.trim();
+        if (sacola.length === 0) return alert("Sacola vazia.");
 
-    // Atualiza estoque
-    let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
-    sacola.forEach(itemSacola => {
-        const produto = produtos.find(p => p.id === itemSacola.id);
-        if (produto) {
-            produto.quantidade -= itemSacola.quantidade;
-        }
+        // Atualiza estoque
+        let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+        sacola.forEach(itemSacola => {
+            const produto = produtos.find(p => p.id === itemSacola.id);
+            if (produto) {
+                produto.quantidade -= itemSacola.quantidade;
+            }
+        });
+        localStorage.setItem("produtos", JSON.stringify(produtos));
+
+        // Cria a movimentação de venda
+        const descricao = sacola.map(item => `${item.quantidade} ${item.nome}`).join("<br>");
+        const total = sacola.reduce((soma, item) => soma + item.valor * item.quantidade, 0);
+
+        const dataIso = localStorage.getItem("dataAtual");
+        const [ano, mes, dia] = dataIso.split("-");
+        const dataAtual = `${dia}/${mes}/${ano}`; // "30/06/2025"
+        
+        const novaMov = {
+            tipo: "venda",
+            nome: nomeCliente || "Venda",
+            descricao,
+            valor: total,
+            data: dataAtual
+        };
+
+        const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
+        movimentacoes.push(novaMov);
+        localStorage.setItem("movimentacoes", JSON.stringify(movimentacoes));
+
+        // Limpa sacola e volta para a tela inicial
+        localStorage.removeItem("sacola");
+        window.location.href = "index.html";
     });
-    localStorage.setItem("produtos", JSON.stringify(produtos));
-
-    // Cria a movimentação de venda
-    const descricao = sacola.map(item => `${item.quantidade} ${item.nome}`).join("<br>");
-    const total = sacola.reduce((soma, item) => soma + item.valor * item.quantidade, 0);
-
-    const novaMov = {
-        tipo: "venda",
-        nome: nomeCliente || "Venda",
-        descricao,
-        valor: total
-    };
-
-    const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
-    movimentacoes.push(novaMov);
-    localStorage.setItem("movimentacoes", JSON.stringify(movimentacoes));
-
-    // Limpa sacola e volta para a tela inicial
-    localStorage.removeItem("sacola");
-    window.location.href = "index.html";
-});
 });
 
 

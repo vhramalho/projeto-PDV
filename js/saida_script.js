@@ -9,13 +9,17 @@ document.getElementById("confirmar").addEventListener("click", () => {
         return;
     }
 
+    const dataIso = localStorage.getItem("dataAtual");
+    const [ano, mes, dia] = dataIso.split("-");
+    const dataAtual = `${dia}/${mes}/${ano}`; // "30/06/2025"
+
     const novaMovimentacao = {
         id: Date.now(),
         tipo: "saida",
         nome,
         descricao,
         valor,
-        data: new Date().toLocaleDateString("pt-BR")
+        data: dataAtual
     };
 
     const movs = JSON.parse(localStorage.getItem("movimentacoes")) || [];
