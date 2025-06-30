@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
     <title>PDV Primos Barbearia</title>
     <link rel="stylesheet" href="css/style.css">
+
 
 </head>
 
@@ -125,6 +128,15 @@
     </div>
 
     <script src="js/index_script.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("service-worker.js")
+                    .then(reg => console.log("Service Worker registrado ✅"))
+                    .catch(err => console.error("Erro no SW:", err));
+            });
+        }
+    </script>
 </body>
 
 </html>
