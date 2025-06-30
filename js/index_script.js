@@ -200,6 +200,8 @@ document.addEventListener("DOMContentLoaded", () => {
             e.stopPropagation();
             movimentoParaExcluir = e.target.closest(".movimento");
             document.getElementById("modal-excluir").style.display = "flex";
+
+            
         }
     });
 
@@ -235,6 +237,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("modal-excluir").style.display = "none";
         movimentoParaExcluir = null;
+
+        window.location.reload();
     });
 
     document.getElementById("cancelar-exclusao").addEventListener("click", () => {
