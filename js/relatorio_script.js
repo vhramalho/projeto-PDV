@@ -74,4 +74,13 @@ document.addEventListener("DOMContentLoaded", () => {
     preencherBloco("#bloco-ano", calcularValores(filtrarPorPeriodo(d =>
         d.getFullYear() === dataAtual.getFullYear()
     )));
+
+    // Atualizar título do bloco "Mês" com nome do mês atual
+    const nomeMes = dataAtual.toLocaleDateString("pt-BR", { month: "long" });
+    const tituloMes = document.querySelector('#bloco-mes h4');
+    if (tituloMes) tituloMes.textContent = `Mês (${nomeMes})`;
+
+    // Atualizar título do bloco "Ano" com ano atual
+    const tituloAno = document.querySelector('#bloco-ano h4');
+    if (tituloAno) tituloAno.textContent = `Ano (${dataAtual.getFullYear()})`;
 });
