@@ -39,9 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function atualizarTelaInicial() {
         const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
 
-        // Reset visual
-        movimentacoesContainer.innerHTML = "<h3>Movimentações</h3>";
-        let saldo = 0;
+        // Pega saldo acumulado e soma com movimentações do dia
+        let saldo = parseFloat(localStorage.getItem("saldoAcumulado")) || 0;
         let totalEntrada = 0;
         let totalSaida = 0;
 
@@ -119,16 +118,20 @@ document.addEventListener("DOMContentLoaded", () => {
             container.innerHTML = estoque.map(p => `<p>${p.nome}: ${p.quantidade} un</p>`).join("");
         }
 
-        // Modal 3: Mostrar saldo real
+        // Modal 3: Mostrar saldo real (acumulado)
         if (numero === 3) {
             const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
-            const saldo = movimentacoes.reduce((total, mov) => {
+            const saldoDia = movimentacoes.reduce((total, mov) => {
                 if (mov.tipo === "entrada" || mov.tipo === "venda") return total + mov.valor;
                 if (mov.tipo === "saida") return total - mov.valor;
                 return total;
             }, 0);
+
+            const saldoAcumulado = parseFloat(localStorage.getItem("saldoAcumulado")) || 0;
+            const saldoTotal = saldoAcumulado + saldoDia;
+
             const container = modal.querySelector("strong");
-            container.textContent = "R$ " + saldo.toFixed(2);
+            container.textContent = "R$ " + saldoTotal.toFixed(2);
         }
     }
 
@@ -153,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const dataAtual = localStorage.getItem("dataAtual");
         const [ano, mes, dia] = dataAtual.split("-");
-        const dataFormatada = `${dia}/${mes}/${ano}` ;
+        const dataFormatada = `${dia}/${mes}/${ano}`;
 
         // Adiciona data a cada movimentação antes de enviar ao histórico
         const movsComData = movimentacoes.map(mov => ({
@@ -165,7 +168,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const historicoAtualizado = [...historico, ...movsComData];
         localStorage.setItem("historico", JSON.stringify(historicoAtualizado));
 
-        // Limpa movimentações do dia
+        // 👉 Atualiza saldo acumulado ANTES de limpar as movimentações
+        let saldoAcumulado = parseFloat(localStorage.getItem("saldoAcumulado")) || 0;
+        movimentacoes.forEach(mov => {
+            if (mov.tipo === "entrada" || mov.tipo === "venda") {
+                saldoAcumulado += mov.valor;
+            } else if (mov.tipo === "saida") {
+                saldoAcumulado -= mov.valor;
+            }
+        });
+        localStorage.setItem("saldoAcumulado", saldoAcumulado.toFixed(2));
+
+        // Agora sim: limpa movimentações do dia
         localStorage.removeItem("movimentacoes");
 
         // Avança o dia +1
@@ -176,6 +190,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         exibirDataAtual();
         atualizarTelaInicial();
+
+        window.location.reload();
     };
 
     // Exclusão de movimentação
