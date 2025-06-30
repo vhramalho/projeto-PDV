@@ -11,15 +11,26 @@
 
 <body>
 
+
     <!-- Cabeçalho preto com título -->
     <header>
         <h1>PDV Primos Barbearia</h1>
+        <!-- Botão de menu -->
+        <button id="botao-menu" class="botao-menu">☰</button>
+
+        <!-- Fundo escurecido -->
+        <div id="fundo-escuro" class="fundo-escuro"></div>
+
+        <!-- Menu lateral -->
+        <aside id="menu-lateral" class="menu-lateral">
+            <ul>
+                <li><a href="config.html">⚙️ Configurações</a></li>
+            </ul>
+        </aside>
     </header>
 
     <!-- Data -->
-    <section id="data-caixa" class="data">
-        <h2>10 de julho</h2>
-    </section>
+    <section id="data-caixa" class="data"></section>
 
     <!-- Caixa com valor e entradas/saídas -->
     <section class="caixa">
@@ -109,7 +120,7 @@
             <p>Deseja excluir esta movimentação?</p>
             <button id="cancelar-exclusao" class="botao-cancelar">Cancelar</button>
             <button id="confirmar-exclusao" class="botao-confirmar">Confirmar</button>
-            
+
         </div>
     </div>
 

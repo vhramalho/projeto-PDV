@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configurações</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+    <header>
+        <h1>Configurações</h1>
+    </header>
+
+    <section class="voltar">
+        <a href="index.html" class="botao-voltar">← Voltar</a>
+    </section>
+
+    <section class="titulo-formulario">
+        <h2>Resetar Aplicativo</h2>
+    </section>
+
+    <section class="area-botao">
+        <button id="resetar-app" class="botao-ver-sacola">Resetar Tudo</button>
+    </section>
+
+    <!-- Modal de confirmação -->
+    <div id="modal-resetar" class="modal">
+        <div class="modal-box">
+            <p>Tem certeza que deseja resetar todo o aplicativo?</p>
+            <div class="modal-botoes">
+                <button id="cancelar-reset" class="botao-cancelar">Cancelar</button>
+                <button id="confirmar-reset" class="botao-confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config_script.js"></script>
+</body>
+
+</html>

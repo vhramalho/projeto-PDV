@@ -606,7 +606,7 @@ hr {
 
 .botao-confirmar,
 .botao-cancelar {
-    
+
     justify-content: space-around;
     padding: 10px 16px;
     border: none;
@@ -615,4 +615,67 @@ hr {
     font-weight: bold;
     cursor: pointer;
 
+}
+
+.botao-menu {
+    position: fixed;
+    top: 7px;
+    left: 16px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: #FFD700;
+    z-index: 1001;
+    cursor: pointer;
+}
+
+/* Fundo escuro ao abrir menu */
+.fundo-escuro {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+/* Menu lateral */
+.menu-lateral {
+    position: fixed;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background-color: #000;
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 1001;
+}
+
+.menu-lateral ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-lateral li {
+    padding: 16px;
+}
+
+.menu-lateral a {
+    text-decoration: none;
+    color: #FFD700;
+    font-weight: bold;
+    display: block;
+}
+
+/* Ativo */
+.menu-lateral.aberto {
+    left: 0;
+}
+
+.fundo-escuro.ativo {
+    display: block;
 }

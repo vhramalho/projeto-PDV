@@ -1,4 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Exibe a data atual no topo
+    const dataCaixa = document.getElementById("data-caixa");
+
+    function exibirDataAtual() {
+        let dataAtual = localStorage.getItem("dataAtual");
+
+        if (!dataAtual) {
+            // Se for a primeira vez, pega a data de hoje
+            const hoje = new Date();
+            dataAtual = hoje.toISOString().split("T")[0]; // formato YYYY-MM-DD
+            localStorage.setItem("dataAtual", dataAtual);
+        }
+
+        const dataFormatada = new Date(dataAtual).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "long"
+        });
+
+        dataCaixa.innerHTML = `<h2>${dataFormatada}</h2>`;
+    }
+
+    exibirDataAtual();
     const valorCaixa = document.getElementById("valor-caixa");
     const botaoCaixa = document.getElementById("toggle-caixa");
     const botaoToggle = document.getElementById("toggle-botoes");
@@ -124,8 +146,16 @@ document.addEventListener("DOMContentLoaded", () => {
     window.finalizarFechamento = () => {
         fecharModal(4);
         localStorage.removeItem("movimentacoes");
+        // Avança a data +1 dia
+        let dataAtual = localStorage.getItem("dataAtual");
+        if (dataAtual) {
+            const novaData = new Date(dataAtual);
+            novaData.setDate(novaData.getDate() + 1);
+            const novaDataFormatada = novaData.toISOString().split("T")[0];
+            localStorage.setItem("dataAtual", novaDataFormatada);
+        }
+        exibirDataAtual();
         atualizarTelaInicial();
-        document.getElementById("data-caixa").innerHTML = `<h2>${new Date().toLocaleDateString("pt-BR")}</h2>`;
     };
 
     // Exclusão de movimentação
@@ -177,4 +207,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     atualizarTelaInicial();
+
+    const botaoMenu = document.getElementById("botao-menu");
+    const menuLateral = document.getElementById("menu-lateral");
+    const fundoEscuro = document.getElementById("fundo-escuro");
+
+    botaoMenu.addEventListener("click", () => {
+        menuLateral.classList.add("aberto");
+        fundoEscuro.classList.add("ativo");
+    });
+
+    fundoEscuro.addEventListener("click", () => {
+        menuLateral.classList.remove("aberto");
+        fundoEscuro.classList.remove("ativo");
+    });
 });
