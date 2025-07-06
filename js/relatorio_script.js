@@ -1,25 +1,33 @@
+// ================================
+// RELATORIO_SCRIPT.JS
+// Script responsável por carregar os valores do relatório geral (dia, semana, mês, ano)
+// ================================
+
 document.addEventListener("DOMContentLoaded", () => {
+
+    // 📅 Pega a data atual salva no sistema
     const dataAtualStr = localStorage.getItem("dataAtual"); // formato: yyyy-mm-dd
     if (!dataAtualStr) return;
 
     const [anoAtual, mesAtual, diaAtual] = dataAtualStr.split("-").map(Number);
     const dataAtual = new Date(anoAtual, mesAtual - 1, diaAtual);
 
+    // 📚 Histórico completo de movimentações
     const historico = JSON.parse(localStorage.getItem("historico")) || [];
 
-    // Data do dia anterior
+    // 🔁 Dia anterior
     const diaAnterior = new Date(dataAtual);
     diaAnterior.setDate(diaAnterior.getDate() - 1);
     const diaAnteriorStr = diaAnterior.toLocaleDateString("pt-BR");
 
-    // Intervalo da semana (domingo a sábado)
+    // 📆 Semana atual (domingo a sábado)
     const primeiroDiaSemana = new Date(dataAtual);
     primeiroDiaSemana.setDate(dataAtual.getDate() - dataAtual.getDay());
 
     const ultimoDiaSemana = new Date(dataAtual);
     ultimoDiaSemana.setDate(dataAtual.getDate() + (6 - dataAtual.getDay()));
 
-    // Função para filtrar por condição de data
+    // 🔎 Função que filtra o histórico com base em um critério (dia, semana, mês, ano)
     function filtrarPorPeriodo(filtroFn) {
         return historico.filter(mov => {
             const [dia, mes, ano] = mov.data.split("/").map(Number);
@@ -28,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Função para somar entradas e saídas
+    // 💰 Função que calcula entradas, saídas e saldo
     function calcularValores(movs) {
         let entrada = 0;
         let saida = 0;
@@ -48,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    // Função para preencher os blocos
+    // 🧩 Preenche um bloco do HTML com os valores
     function preencherBloco(id, valores) {
         const bloco = document.querySelector(id);
         if (!bloco) return;
@@ -57,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         bloco.querySelector(".saldo").textContent = `R$${valores.saldo}`;
     }
 
-    // Preencher cada bloco
+    // 📊 Preencher todos os blocos com os dados filtrados
     preencherBloco("#bloco-dia", calcularValores(filtrarPorPeriodo(d =>
         d.toLocaleDateString("pt-BR") === diaAnteriorStr
     )));
@@ -74,13 +82,4 @@ document.addEventListener("DOMContentLoaded", () => {
     preencherBloco("#bloco-ano", calcularValores(filtrarPorPeriodo(d =>
         d.getFullYear() === dataAtual.getFullYear()
     )));
-
-    // Atualizar título do bloco "Mês" com nome do mês atual
-    const nomeMes = dataAtual.toLocaleDateString("pt-BR", { month: "long" });
-    const tituloMes = document.querySelector('#bloco-mes h4');
-    if (tituloMes) tituloMes.textContent = `Mês (${nomeMes})`;
-
-    // Atualizar título do bloco "Ano" com ano atual
-    const tituloAno = document.querySelector('#bloco-ano h4');
-    if (tituloAno) tituloAno.textContent = `Ano (${dataAtual.getFullYear()})`;
 });

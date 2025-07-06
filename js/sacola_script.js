@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Seleciona o container onde os itens da sacola serão exibidos
+    // Elemento onde os produtos da sacola serão exibidos
     const sacolaLista = document.querySelector('.sacola-lista');
 
-    // Seleciona os elementos do resumo (itens e total)
+    // Elementos do resumo (quantidade total de itens e valor total)
     const resumoItens = document.querySelector('.resumo-venda span:nth-child(1)');
     const resumoTotal = document.querySelector('.resumo-venda span:nth-child(2)');
 
-    // Recupera os dados da sacola do localStorage (ou array vazio se não houver)
+    // Recupera a sacola armazenada no localStorage
     let sacola = JSON.parse(localStorage.getItem('sacola')) || [];
 
     // Atualiza o resumo de itens e total
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         atualizarResumo();
     }
 
-    // Cria o HTML de um item da sacola e adiciona os eventos
+    // Cria o HTML de um item da sacola e adiciona eventos de +, − e excluir
     function criarItemSacola(item, index) {
         const div = document.createElement('div');
         div.classList.add('item-sacola');
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 `;
 
-        // Botão de aumentar quantidade
+        // Aumentar quantidade
         div.querySelector('.mais').addEventListener('click', () => {
             if (item.quantidade < item.estoque) {
                 item.quantidade++;
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Botão de diminuir quantidade
+        // Diminuir quantidade
         div.querySelector('.menos').addEventListener('click', () => {
             if (item.quantidade > 1) {
                 item.quantidade--;
@@ -60,23 +60,23 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Botão de excluir item da sacola
+        // Excluir item
         div.querySelector('.excluir').addEventListener('click', () => {
             sacola.splice(index, 1);
             localStorage.setItem('sacola', JSON.stringify(sacola));
-            location.reload(); // recarrega a página para refletir as mudanças
+            location.reload(); // Recarrega para refletir as mudanças
         });
 
         return div;
     }
 
-    // Monta a lista de produtos da sacola
+    // Monta visualmente todos os itens da sacola
     sacola.forEach((item, index) => {
         const elemento = criarItemSacola(item, index);
         sacolaLista.appendChild(elemento);
     });
 
-    // Atualiza o resumo inicialmente
+    // Atualiza o resumo ao carregar a página
     atualizarResumo();
 
     // Botão "Finalizar Venda"
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const nomeCliente = document.getElementById('cliente').value.trim();
         if (sacola.length === 0) return alert("Sacola vazia.");
 
-        // Atualiza estoque
+        // Atualiza o estoque dos produtos
         let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
         sacola.forEach(itemSacola => {
             const produto = produtos.find(p => p.id === itemSacola.id);
@@ -94,14 +94,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         localStorage.setItem("produtos", JSON.stringify(produtos));
 
-        // Cria a movimentação de venda
+        // Cria a movimentação da venda
         const descricao = sacola.map(item => `${item.quantidade} ${item.nome}`).join("<br>");
         const total = sacola.reduce((soma, item) => soma + item.valor * item.quantidade, 0);
 
         const dataIso = localStorage.getItem("dataAtual");
         const [ano, mes, dia] = dataIso.split("-");
-        const dataAtual = `${dia}/${mes}/${ano}`; // "30/06/2025"
-        
+        const dataAtual = `${dia}/${mes}/${ano}`; // Formato: dd/mm/yyyy
+
         const novaMov = {
             tipo: "venda",
             nome: nomeCliente || "Venda",
@@ -110,14 +110,13 @@ document.addEventListener('DOMContentLoaded', function () {
             data: dataAtual
         };
 
+        // Salva a movimentação
         const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
         movimentacoes.push(novaMov);
         localStorage.setItem("movimentacoes", JSON.stringify(movimentacoes));
 
-        // Limpa sacola e volta para a tela inicial
+        // Limpa a sacola e retorna à tela inicial
         localStorage.removeItem("sacola");
         window.location.href = "index.html";
     });
 });
-
-
