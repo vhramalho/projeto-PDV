@@ -1,28 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Exibe a data atual no topo
+    // Elementos principais da tela
     const dataCaixa = document.getElementById("data-caixa");
-
-    function exibirDataAtual() {
-        let dataAtual = localStorage.getItem("dataAtual");
-
-        if (!dataAtual) {
-            // Se for a primeira vez, pega a data local do Brasil
-            const hoje = new Date();
-            const [dia, mes, ano] = hoje.toLocaleDateString("pt-BR").split("/");
-            dataAtual = `${ano}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`; // formato YYYY-MM-DD
-            localStorage.setItem("dataAtual", dataAtual);
-        }
-
-        const [ano, mes, dia] = dataAtual.split("-");
-        const dataFormatada = new Date(ano, mes - 1, dia).toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "long"
-        });
-
-        dataCaixa.innerHTML = `<h2>${dataFormatada}</h2>`;
-    }
-
-    exibirDataAtual();
     const valorCaixa = document.getElementById("valor-caixa");
     const botaoCaixa = document.getElementById("toggle-caixa");
     const botaoToggle = document.getElementById("toggle-botoes");
@@ -35,11 +13,32 @@ document.addEventListener("DOMContentLoaded", () => {
     let botoesVisiveis = false;
     let movimentoParaExcluir = null;
 
-    // Exibe o saldo e movimentações reais
+    // Função que exibe a data atual formatada
+    function exibirDataAtual() {
+        let dataAtual = localStorage.getItem("dataAtual");
+        if (!dataAtual) {
+            const hoje = new Date();
+            const [dia, mes, ano] = hoje.toLocaleDateString("pt-BR").split("/");
+            dataAtual = `${ano}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`;
+            localStorage.setItem("dataAtual", dataAtual);
+        }
+
+        const [ano, mes, dia] = dataAtual.split("-");
+        const dataFormatada = new Date(ano, mes - 1, dia).toLocaleDateString("pt-BR", {
+            day: "2-digit", month: "long"
+        });
+        dataCaixa.innerHTML = `<h2>${dataFormatada}</h2>`;
+    }
+
+    exibirDataAtual();
+
+    // Atualiza saldo e movimentações na tela
     function atualizarTelaInicial() {
         const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
 
-        // Pega saldo acumulado e soma com movimentações do dia
+        // Evita duplicação visual
+        movimentacoesContainer.innerHTML = "<h3>Movimentações</h3>";
+
         let saldo = parseFloat(localStorage.getItem("saldoAcumulado")) || 0;
         let totalEntrada = 0;
         let totalSaida = 0;
@@ -50,9 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
             div.setAttribute("data-index", index);
             div.setAttribute("onclick", "toggleOpcoes(this)");
 
-            const cor = mov.tipo === "entrada" ? "cor-azul" : mov.tipo === "saida" ? "cor-vermelha" : "cor-verde";
+            const cor = mov.tipo === "entrada" ? "cor-azul" :
+                mov.tipo === "saida" ? "cor-vermelha" : "cor-verde";
             const corValor = mov.tipo === "saida" ? "vermelho" : "verde";
-            const sinal = mov.tipo === "saida" ? "-" : "+";
 
             div.innerHTML = `
 <div class="barra ${cor}"></div>
@@ -66,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <button class="excluir">🗑️</button>
 </div>
 `;
+
             movimentacoesContainer.appendChild(div);
 
             if (mov.tipo === "entrada") {
@@ -80,45 +80,37 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        valorCaixa.textContent = caixaVisivel ? "R$" + saldo.toFixed(2) : "••••••";
+        valorCaixa.textContent = caixaVisivel ? `R$${saldo.toFixed(2)}` : "••••••";
         resumoEntrada.textContent = "+" + totalEntrada.toFixed(2);
         resumoSaida.textContent = "-" + totalSaida.toFixed(2);
     }
 
-    // Alternar visibilidade do saldo
     botaoCaixa.addEventListener("click", () => {
         caixaVisivel = !caixaVisivel;
-        atualizarTelaInicial();
+        atualizarTelaInicial(); // agora sem duplicação
     });
 
-    // Mostrar/ocultar botões flutuantes
     botaoToggle.addEventListener("click", () => {
         botoesVisiveis = !botoesVisiveis;
         botoesFlutuantes.style.display = botoesVisiveis ? "block" : "none";
     });
 
-    // Ativar/desativar opções da movimentação
-    window.toggleOpcoes = function (elemento) {
-        elemento.classList.toggle("ativo");
+    window.toggleOpcoes = function (el) {
+        el.classList.toggle("ativo");
     };
 
-    // Botão de cadeado abre o modal de fechamento
-    document.getElementById("botao-cadeado").addEventListener("click", () => {
-        abrirModal(1);
-    });
+    document.getElementById("botao-cadeado").addEventListener("click", () => abrirModal(1));
 
     function abrirModal(numero) {
         const modal = document.getElementById("modal" + numero);
         modal.style.display = "flex";
 
-        // Modal 2: Mostrar estoque real
         if (numero === 2) {
             const estoque = JSON.parse(localStorage.getItem("produtos")) || [];
             const container = modal.querySelector(".estoque-simulacao");
             container.innerHTML = estoque.map(p => `<p>${p.nome}: ${p.quantidade} un</p>`).join("");
         }
 
-        // Modal 3: Mostrar saldo real (acumulado)
         if (numero === 3) {
             const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
             const saldoDia = movimentacoes.reduce((total, mov) => {
@@ -126,28 +118,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (mov.tipo === "saida") return total - mov.valor;
                 return total;
             }, 0);
-
             const saldoAcumulado = parseFloat(localStorage.getItem("saldoAcumulado")) || 0;
-            const saldoTotal = saldoAcumulado + saldoDia;
-
-            const container = modal.querySelector("strong");
-            container.textContent = "R$ " + saldoTotal.toFixed(2);
+            modal.querySelector("strong").textContent = "R$ " + (saldoAcumulado + saldoDia).toFixed(2);
         }
     }
 
-    function fecharModal(numero) {
-        document.getElementById("modal" + numero).style.display = "none";
+    function fecharModal(num) {
+        document.getElementById("modal" + num).style.display = "none";
     }
 
-    function proximoModal(numero) {
-        fecharModal(numero - 1);
-        abrirModal(numero);
+    function proximoModal(num) {
+        fecharModal(num - 1);
+        abrirModal(num);
     }
 
     window.fecharModal = fecharModal;
     window.proximoModal = proximoModal;
 
-    // Botão confirmar fechamento do caixa
+    // Fechamento de caixa
     window.finalizarFechamento = () => {
         fecharModal(4);
 
@@ -158,39 +146,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const [ano, mes, dia] = dataAtual.split("-");
         const dataFormatada = `${dia}/${mes}/${ano}`;
 
-        // Adiciona data a cada movimentação antes de enviar ao histórico
         const movsComData = movimentacoes.map(mov => ({
-            ...mov,
-            data: dataFormatada
+            ...mov, data: dataFormatada
         }));
 
-        // Adiciona ao histórico
-        const historicoAtualizado = [...historico, ...movsComData];
-        localStorage.setItem("historico", JSON.stringify(historicoAtualizado));
+        localStorage.setItem("historico", JSON.stringify([...historico, ...movsComData]));
 
-        // 👉 Atualiza saldo acumulado ANTES de limpar as movimentações
         let saldoAcumulado = parseFloat(localStorage.getItem("saldoAcumulado")) || 0;
         movimentacoes.forEach(mov => {
-            if (mov.tipo === "entrada" || mov.tipo === "venda") {
-                saldoAcumulado += mov.valor;
-            } else if (mov.tipo === "saida") {
-                saldoAcumulado -= mov.valor;
-            }
+            if (mov.tipo === "entrada" || mov.tipo === "venda") saldoAcumulado += mov.valor;
+            else if (mov.tipo === "saida") saldoAcumulado -= mov.valor;
         });
         localStorage.setItem("saldoAcumulado", saldoAcumulado.toFixed(2));
-
-        // Agora sim: limpa movimentações do dia
         localStorage.removeItem("movimentacoes");
 
-        // Avança o dia +1
         const novaData = new Date(dataAtual);
         novaData.setDate(novaData.getDate() + 1);
-        const novaDataFormatada = novaData.toISOString().split("T")[0];
-        localStorage.setItem("dataAtual", novaDataFormatada);
+        localStorage.setItem("dataAtual", novaData.toISOString().split("T")[0]);
 
         exibirDataAtual();
         atualizarTelaInicial();
-
         window.location.reload();
     };
 
@@ -200,8 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
             e.stopPropagation();
             movimentoParaExcluir = e.target.closest(".movimento");
             document.getElementById("modal-excluir").style.display = "flex";
-
-            
         }
     });
 
@@ -211,34 +184,25 @@ document.addEventListener("DOMContentLoaded", () => {
             const movimentacoes = JSON.parse(localStorage.getItem("movimentacoes")) || [];
             const removida = movimentacoes.splice(index, 1)[0];
 
-            // Se for venda, devolve ao estoque
             if (removida?.tipo === "venda") {
                 let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
-
-                // descricao vem como "3 batata<br>2 shampoo", separa e processa
                 const linhas = removida.descricao.split("<br>");
                 linhas.forEach(linha => {
                     const partes = linha.trim().split(" ");
                     const qtd = parseInt(partes[0]);
-                    const nomeProduto = partes.slice(1).join(" ");
-                    const produto = produtos.find(p => p.nome === nomeProduto);
-                    if (produto) {
-                        produto.quantidade += qtd;
-                    }
+                    const nome = partes.slice(1).join(" ");
+                    const prod = produtos.find(p => p.nome === nome);
+                    if (prod) prod.quantidade += qtd;
                 });
-
                 localStorage.setItem("produtos", JSON.stringify(produtos));
             }
 
-            // Salva as movimentações atualizadas
             localStorage.setItem("movimentacoes", JSON.stringify(movimentacoes));
             atualizarTelaInicial();
+            document.getElementById("modal-excluir").style.display = "none";
+            movimentoParaExcluir = null;
+            window.location.reload();
         }
-
-        document.getElementById("modal-excluir").style.display = "none";
-        movimentoParaExcluir = null;
-
-        window.location.reload();
     });
 
     document.getElementById("cancelar-exclusao").addEventListener("click", () => {
@@ -246,8 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
         movimentoParaExcluir = null;
     });
 
-    atualizarTelaInicial();
-
+    // Menu lateral
     const botaoMenu = document.getElementById("botao-menu");
     const menuLateral = document.getElementById("menu-lateral");
     const fundoEscuro = document.getElementById("fundo-escuro");
@@ -261,4 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
         menuLateral.classList.remove("aberto");
         fundoEscuro.classList.remove("ativo");
     });
+
+    atualizarTelaInicial(); // chamada única, fora dos eventos
 });
